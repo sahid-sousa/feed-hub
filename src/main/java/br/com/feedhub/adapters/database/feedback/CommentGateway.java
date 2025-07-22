@@ -1,0 +1,15 @@
+package br.com.feedhub.adapters.database.feedback;
+
+import br.com.feedhub.domain.feedback.Comment;
+import br.com.feedhub.domain.feedback.Feedback;
+import br.com.feedhub.domain.security.User;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface CommentGateway {
+    Comment save(Comment comment);
+    Optional<List<Comment>> findAllByFeedback(Feedback feedback, Pageable pageable);
+    Optional<List<Comment>> findAllByAuthor(User author, Pageable pageable);
+}
