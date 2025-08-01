@@ -6,7 +6,7 @@ import br.com.feedhub.application.usecases.security.auth.Authenticate;
 import br.com.feedhub.application.usecases.security.auth.GenerateToken;
 import br.com.feedhub.domain.security.User;
 import br.com.feedhub.domain.security.UserRole;
-import br.com.feedhub.interfaces.dto.request.AccountCredentials;
+import br.com.feedhub.interfaces.dto.request.security.AccountCredentials;
 import br.com.feedhub.interfaces.dto.response.TokenResponse;
 import br.com.feedhub.interfaces.exceptions.InvalidAuthenticationException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -53,7 +53,7 @@ public class AuthenticateImpl implements Authenticate {
                 roles.add(role.getRole().getAuthority());
             }
         });
-        return generateToken.generate(username, roles);
+        return generateToken.execute(username, roles);
     }
 
 }

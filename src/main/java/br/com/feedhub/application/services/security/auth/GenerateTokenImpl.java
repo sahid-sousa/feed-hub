@@ -31,7 +31,7 @@ public class GenerateTokenImpl implements GenerateToken {
     }
 
     @Override
-    public TokenResponse generate(String username, List<String> roles) {
+    public TokenResponse execute(String username, List<String> roles) {
         final ZoneId ZONE_ID = ZoneId.systemDefault();
         final LocalDateTime NOW = LocalDateTime.now();
         final LocalDateTime EXPIRES_AT = NOW.plus(Duration.ofMillis(VALIDITY));

@@ -1,4 +1,4 @@
-package br.com.feedhub.interfaces.dto.request;
+package br.com.feedhub.interfaces.dto.request.user;
 
 import java.io.Serializable;
 import org.springframework.data.domain.PageRequest;

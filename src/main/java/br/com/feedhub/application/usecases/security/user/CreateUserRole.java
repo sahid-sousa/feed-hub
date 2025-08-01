@@ -6,5 +6,5 @@ import br.com.feedhub.domain.security.User;
 import java.util.List;
 
 public interface CreateUserRole {
-    void create(User user, List<Role> roles );
+    void execute(User user, List<Role> roles );
 }

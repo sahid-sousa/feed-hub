@@ -1,18 +1,20 @@
-package br.com.feedhub.interfaces.controllers;
+package br.com.feedhub.interfaces.controllers.user;
 
 import br.com.feedhub.application.usecases.security.user.CreateUser;
 import br.com.feedhub.application.usecases.security.user.FindUser;
 import br.com.feedhub.application.usecases.security.user.ListUser;
 import br.com.feedhub.application.usecases.security.user.UpdateUser;
-import br.com.feedhub.interfaces.dto.request.UserCreateRequest;
-import br.com.feedhub.interfaces.dto.request.UserUpdateRequest;
+import br.com.feedhub.interfaces.dto.request.user.UserCreateRequest;
+import br.com.feedhub.interfaces.dto.request.user.UserUpdateRequest;
 import br.com.feedhub.interfaces.dto.response.PageListResponse;
 import br.com.feedhub.interfaces.dto.response.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,13 +56,14 @@ public class UserController {
     )
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody UserCreateRequest user) {
-        var userCreated = createUser.create(user);
+        var userCreated = createUser.execute(user);
         return ResponseEntity.ok().body(userCreated);
     }
 
     @Operation(
             summary = "Update a User",
-            description = "Update a new User by passing in a JSON",
+            description = "Update a User by passing in a JSON",
+            security = { @SecurityRequirement(name = "bearerAuth") },
             responses = {
                     @ApiResponse(
                             description = "Success", responseCode = "200",
@@ -73,8 +76,8 @@ public class UserController {
             }
     )
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody UserUpdateRequest user) {
-        var userUpdated = updateUser.update(user);
+    public ResponseEntity<?> update(@RequestBody UserUpdateRequest user, HttpServletRequest request) {
+        var userUpdated = updateUser.execute(user, request);
         return ResponseEntity.ok().body(userUpdated);
     }
 
@@ -94,9 +97,11 @@ public class UserController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
+
+    //TODO checar se e preciso mover os metodos de find, list para um controller admin
     @GetMapping(value = "/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        var foundUser = findUser.find(id);
+        var foundUser = findUser.execute(id);
         return ResponseEntity.ok().body(foundUser);
     }
 
@@ -123,7 +128,7 @@ public class UserController {
             @RequestParam(value = "sort", defaultValue = "name") String sortBy,
             @RequestParam(value = "direction", defaultValue = "asc") String sortDirection
             ) {
-        var userList = listUser.list(name, username, page, size, sortBy, sortDirection);
+        var userList = listUser.execute(name, username, page, size, sortBy, sortDirection);
         return ResponseEntity.ok().body(userList);
     }
 

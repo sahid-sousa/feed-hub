@@ -1,15 +1,14 @@
-package br.com.feedhub.interfaces.dto.request;
+package br.com.feedhub.interfaces.dto.request.user;
 
 import java.util.List;
 
+public class UserLoggedDto extends BaseUserDetails {
 
-public class UserCreateRequest extends BaseUserDetails {
-
-    public UserCreateRequest() {
+    public UserLoggedDto() {
         super();
     }
 
-    public UserCreateRequest(
+    public UserLoggedDto(
             String name,
             String username,
             String password,
@@ -22,7 +21,5 @@ public class UserCreateRequest extends BaseUserDetails {
     ) {
         super(name, username, password, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled, email, authorities);
     }
-
-
 
 }

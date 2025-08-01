@@ -24,7 +24,7 @@ public class ValidateTokenImpl implements ValidateToken {
     }
 
     @Override
-    public Boolean validate(String token) {
+    public Boolean execute(String token) {
         Algorithm alg = Algorithm.HMAC256(SECRET_KEY.getBytes());
         JWTVerifier verifier = JWT.require(alg).build();
         DecodedJWT decoded = verifier.verify(token);

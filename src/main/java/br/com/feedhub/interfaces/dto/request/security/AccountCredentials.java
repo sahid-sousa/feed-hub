@@ -1,4 +1,4 @@
-package br.com.feedhub.interfaces.dto.request;
+package br.com.feedhub.interfaces.dto.request.security;
 
 import java.io.Serial;
 import java.io.Serializable;

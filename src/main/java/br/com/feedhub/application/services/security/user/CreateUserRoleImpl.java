@@ -19,7 +19,7 @@ public class CreateUserRoleImpl implements CreateUserRole {
     }
 
     @Override
-    public void create(User user, List<Role> roles ) {
+    public void execute(User user, List<Role> roles ) {
         roles.forEach(role -> {
             UserRole userRole = new UserRole();
             userRole.setUser(user);

@@ -5,7 +5,7 @@ import br.com.feedhub.adapters.database.user.UserGateway;
 import br.com.feedhub.adapters.database.user.UserRoleGateway;
 import br.com.feedhub.application.usecases.security.user.ListUser;
 import br.com.feedhub.domain.security.User;
-import br.com.feedhub.interfaces.dto.request.RoleDto;
+import br.com.feedhub.interfaces.dto.request.user.RoleDto;
 import br.com.feedhub.interfaces.dto.response.PageListResponse;
 import br.com.feedhub.interfaces.dto.response.UserResponse;
 import br.com.feedhub.utils.GenericBuilder;
@@ -35,16 +35,13 @@ public class ListUserImpl implements ListUser {
     }
 
     @Override
-    public PageListResponse<UserResponse> list(String name, String username, int page, int size, String sortBy, String sortDirection) {
+    public PageListResponse<UserResponse> execute(String name, String username, int page, int size, String sortBy, String sortDirection) {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
-
         String nameFilter = StringUtils.hasText(name) ? name : "";
         String usernameFilter = StringUtils.hasText(username) ? username : "";
-
         Page<User> usersPage = userGateway.findAllByFilters(nameFilter, usernameFilter, pageable);
-
         Page<UserResponse> responsePage = usersPage.map(user ->
                 GenericBuilder.of(UserResponse::new)
                         .with(UserResponse::setId, user.getId())

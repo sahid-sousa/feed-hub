@@ -39,7 +39,7 @@ class FeedbackRepositoryTest {
         user.setEmail("email@email.com");
 
         feedback = new Feedback();
-        feedback.setUser(user);
+        feedback.setAuthor(user);
         feedback.setTitle("Title");
         feedback.setDescription("Description");
         feedback.setCategory(FeedbackCategory.QUESTION);
@@ -55,10 +55,10 @@ class FeedbackRepositoryTest {
 
         //Then
         assertNotNull(savedFeedback);
-        assertEquals("User", savedFeedback.getUser().getName());
-        assertEquals("user-test", savedFeedback.getUser().getUsername());
-        assertEquals("123456", savedFeedback.getUser().getPassword());
-        assertEquals("email@email.com", savedFeedback.getUser().getEmail());
+        assertEquals("User", savedFeedback.getAuthor().getName());
+        assertEquals("user-test", savedFeedback.getAuthor().getUsername());
+        assertEquals("123456", savedFeedback.getAuthor().getPassword());
+        assertEquals("email@email.com", savedFeedback.getAuthor().getEmail());
 
         assertEquals("Title", savedFeedback.getTitle());
         assertEquals("Description", savedFeedback.getDescription());
@@ -70,14 +70,14 @@ class FeedbackRepositoryTest {
         //When
         userRepository.save(user);
         feedbackRepository.save(feedback);
-        Optional<List<Feedback>> feedbacks = feedbackRepository.findAllByUser(user, PageRequest.of(0, 10));
+        Optional<List<Feedback>> feedbacks = feedbackRepository.findAllByAuthor(user, PageRequest.of(0, 10));
 
         //Then
         assertTrue(feedbacks.isPresent());
-        assertEquals("User", feedbacks.get().getFirst().getUser().getName());
-        assertEquals("user-test", feedbacks.get().getFirst().getUser().getUsername());
-        assertEquals("123456", feedbacks.get().getFirst().getUser().getPassword());
-        assertEquals("email@email.com", feedbacks.get().getFirst().getUser().getEmail());
+        assertEquals("User", feedbacks.get().getFirst().getAuthor().getName());
+        assertEquals("user-test", feedbacks.get().getFirst().getAuthor().getUsername());
+        assertEquals("123456", feedbacks.get().getFirst().getAuthor().getPassword());
+        assertEquals("email@email.com", feedbacks.get().getFirst().getAuthor().getEmail());
 
         assertEquals("Title", feedbacks.get().getFirst().getTitle());
         assertEquals("Description", feedbacks.get().getFirst().getDescription());

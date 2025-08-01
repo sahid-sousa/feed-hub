@@ -44,7 +44,7 @@ class CommentRepositoryTest {
         author.setEmail("email@email.com");
 
         feedback = new Feedback();
-        feedback.setUser(author);
+        feedback.setAuthor(author);
         feedback.setTitle("Title");
         feedback.setDescription("Description");
         feedback.setCategory(FeedbackCategory.QUESTION);

@@ -20,11 +20,11 @@ public class JwtTokenProvider {
     }
 
     public Authentication authenticate(String token) {
-        return authenticateToken.authenticate(token);
+        return authenticateToken.execute(token);
     }
 
     public String resolve(String token) {
-        return resolveToken.resolve(token);
+        return resolveToken.execute(token);
     }
 
 }

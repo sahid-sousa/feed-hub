@@ -1,7 +1,7 @@
 package br.com.feedhub.interfaces.dto.response;
 
-import br.com.feedhub.interfaces.dto.request.BaseUserDetails;
-import br.com.feedhub.interfaces.dto.request.RoleDto;
+import br.com.feedhub.interfaces.dto.request.user.BaseUserDetails;
+import br.com.feedhub.interfaces.dto.request.user.RoleDto;
 
 import java.util.List;
 

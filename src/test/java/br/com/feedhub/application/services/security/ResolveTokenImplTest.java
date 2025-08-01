@@ -31,7 +31,7 @@ class ResolveTokenImplTest {
     @DisplayName("Test Resolve JWT Token")
     void testResolveJwtToken() {
         //When
-        String resolvedToken = resolveToken.resolve(bearerToken);
+        String resolvedToken = resolveToken.execute(bearerToken);
 
         //Then
         assertNotNull(resolvedToken);

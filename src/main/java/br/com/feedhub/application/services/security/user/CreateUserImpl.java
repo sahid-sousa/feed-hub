@@ -6,8 +6,8 @@ import br.com.feedhub.application.usecases.security.user.CreateUser;
 import br.com.feedhub.application.usecases.security.user.CreateUserRole;
 import br.com.feedhub.domain.security.Role;
 import br.com.feedhub.domain.security.User;
-import br.com.feedhub.interfaces.dto.request.RoleDto;
-import br.com.feedhub.interfaces.dto.request.UserCreateRequest;
+import br.com.feedhub.interfaces.dto.request.user.RoleDto;
+import br.com.feedhub.interfaces.dto.request.user.UserCreateRequest;
 import br.com.feedhub.interfaces.dto.response.UserResponse;
 import br.com.feedhub.interfaces.exceptions.ResourceFoundException;
 import br.com.feedhub.utils.GenericBuilder;
@@ -15,6 +15,7 @@ import br.com.feedhub.utils.Validations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -25,6 +26,8 @@ public class CreateUserImpl implements CreateUser {
     private final CreateRole createRole;
     private final CreateUserRole createUserRole;
     private final Validations validations;
+
+    private final String[] ROLES = {"ROLE_USER"};
 
     public CreateUserImpl(
             PasswordEncoder passwordEncoder,
@@ -41,20 +44,17 @@ public class CreateUserImpl implements CreateUser {
     }
 
     @Override
-    public UserResponse create(UserCreateRequest userCreateRequest) {
-        validations.isNameUsernamePasswordEmailOrAuthoritiesEmpty(userCreateRequest);
-        validations.isValidEmail(userCreateRequest);
-
+    public UserResponse execute(UserCreateRequest userCreateRequest) {
+        validations.isValidEmail(userCreateRequest.getEmail());
         if (userGateway.findByUsername(userCreateRequest.getUsername()).isPresent()) {
             throw new ResourceFoundException("Username already exists");
         }
         if (userGateway.findByEmail(userCreateRequest.getEmail()).isPresent()) {
             throw new ResourceFoundException("Email already exists");
         }
-
         User userCreated = createUser(userCreateRequest);
-        List<Role> roles = createRole.create(userCreateRequest);
-        createUserRole.create(userCreated, roles);
+        List<Role> roles = createRole.execute(ROLES);
+        createUserRole.execute(userCreated, roles);
         return GenericBuilder.of(UserResponse::new)
                 .with(UserResponse::setId, userCreated.getId())
                 .with(UserResponse::setName,userCreated.getName())
@@ -65,15 +65,15 @@ public class CreateUserImpl implements CreateUser {
                 .with(UserResponse::setAccountNonLocked, userCreated.isAccountNonLocked())
                 .with(UserResponse::setCredentialsNonExpired, userCreated.isCredentialsNonExpired())
                 .with(UserResponse::setEnabled, userCreated.isEnabled())
-                .with(UserResponse::setAuthorities, getRoles(userCreateRequest))
+                .with(UserResponse::setAuthorities, getRoles(ROLES))
                 .build();
     }
 
-    public List<RoleDto> getRoles(UserCreateRequest userCreateRequest) {
-        return userCreateRequest.getAuthorities().stream().map(authority ->
+    public List<RoleDto> getRoles(String[] roles) {
+        return Arrays.stream(roles).map(authority ->
                 GenericBuilder.of(RoleDto::new)
-                        .with(RoleDto::setAuthority, authority.getAuthority())
-                        .with(RoleDto::setDescription, authority.getAuthority().replace("ROLE_", ""))
+                        .with(RoleDto::setAuthority, authority)
+                        .with(RoleDto::setDescription, authority.replace("ROLE_", ""))
                         .build()).toList();
     }
 
@@ -83,10 +83,10 @@ public class CreateUserImpl implements CreateUser {
                 .with(User::setUsername, userCreateRequest.getUsername())
                 .with(User::setEmail, userCreateRequest.getEmail())
                 .with(User::setPassword, passwordEncoder.encode(userCreateRequest.getPassword()))
-                .with(User::setAccountNonExpired, userCreateRequest.isAccountNonExpired())
-                .with(User::setAccountNonLocked, userCreateRequest.isAccountNonLocked())
-                .with(User::setCredentialsNonExpired, userCreateRequest.isCredentialsNonExpired())
-                .with(User::setEnabled, userCreateRequest.isEnabled())
+                .with(User::setAccountNonExpired, true)
+                .with(User::setAccountNonLocked, true)
+                .with(User::setCredentialsNonExpired, true)
+                .with(User::setEnabled, true)
                 .build();
         return userGateway.save(user);
     }

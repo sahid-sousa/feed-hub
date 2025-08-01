@@ -40,7 +40,7 @@ class GenerateTokenImplTest {
     @DisplayName("Test Generate JWT Token")
     void testGenerateJwtToken() {
         //When
-        TokenResponse tokenResponse = jwtToken.generate("alirio-user", roles) ;
+        TokenResponse tokenResponse = jwtToken.execute("alirio-user", roles) ;
 
         //Then
         assertNotNull(tokenResponse);

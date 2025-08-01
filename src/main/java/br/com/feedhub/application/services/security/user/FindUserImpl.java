@@ -7,7 +7,7 @@ import br.com.feedhub.application.usecases.security.user.FindUser;
 import br.com.feedhub.domain.security.Role;
 import br.com.feedhub.domain.security.User;
 import br.com.feedhub.domain.security.UserRole;
-import br.com.feedhub.interfaces.dto.request.RoleDto;
+import br.com.feedhub.interfaces.dto.request.user.RoleDto;
 import br.com.feedhub.interfaces.dto.response.UserResponse;
 import br.com.feedhub.interfaces.exceptions.RequiredObjectIsNullException;
 import br.com.feedhub.utils.GenericBuilder;
@@ -31,7 +31,7 @@ public class FindUserImpl implements FindUser {
     }
 
     @Override
-    public UserResponse find(Long id) {
+    public UserResponse execute(Long id) {
         Optional<User> findedUser = userGateway.findById(id);
         if (findedUser.isEmpty()) {
             throw  new RequiredObjectIsNullException("User not found for id " + id);

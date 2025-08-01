@@ -23,6 +23,7 @@ import java.util.Map;
 @EnableWebSecurity
 public class SecurityConfig {
 
+
     JwtTokenProvider jwtTokenProvider;
 
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -44,6 +45,21 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+    public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
+            "/auth",
+            "/user/create",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
+    };
+
+    public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
+            "/user/update",
+            "/user/find/**",
+            "/user/list/**",
+            "/feedback/create",
+            "/feedback/list/**",
+    };
+
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider);
@@ -55,15 +71,9 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorizeRequests -> authorizeRequests
-                                .requestMatchers(
-                                        "/auth",
-                                        "/user/create",
-                                        "/user/update",
-                                        "/user/find/**",
-                                        "/user/list/**",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**"
-                                ).permitAll()
+                                .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+                                .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).hasRole("USER")
+                                .anyRequest().authenticated()
                 )
                 .cors(cors -> {})
                 .build();

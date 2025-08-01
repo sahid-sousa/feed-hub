@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class ResolveTokenImpl implements ResolveToken {
 
     @Override
-    public String resolve(String token) {
+    public String execute(String token) {
         final String BEARER_TOKEN = "Bearer ";
         if (token == null || token.isEmpty()) {
             return null;

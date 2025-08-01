@@ -1,4 +1,4 @@
-package br.com.feedhub.interfaces.dto.request;
+package br.com.feedhub.interfaces.dto.request.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

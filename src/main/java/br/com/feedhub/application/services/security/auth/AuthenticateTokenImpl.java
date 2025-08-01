@@ -21,7 +21,7 @@ public class AuthenticateTokenImpl implements AuthenticateToken {
     }
 
     @Override
-    public Authentication authenticate(String token) {
+    public Authentication execute(String token) {
         DecodedJWT decoded = tokenDecoder.decode(token);
         UserDetails details = userDetails.loadByUsername(decoded.getSubject());
         return new UsernamePasswordAuthenticationToken(details, "", details.getAuthorities());

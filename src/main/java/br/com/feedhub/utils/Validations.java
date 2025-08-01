@@ -1,6 +1,6 @@
 package br.com.feedhub.utils;
 
-import br.com.feedhub.interfaces.dto.request.BaseUserDetails;
+import br.com.feedhub.interfaces.dto.request.user.BaseUserDetails;
 import br.com.feedhub.interfaces.exceptions.PropertiesNotFoundException;
 import br.com.feedhub.interfaces.exceptions.PropertiesNotValidException;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ public class Validations {
                 user.getUsername(),
                 user.getPassword(),
                 user.getEmail()
-        ) ||  user.getAuthorities() == null || user.getAuthorities().isEmpty();
+        ) || isAuthoritiesEmpty(user);
         if (validation) {
             throw new PropertiesNotFoundException("Attributes username, password, email or authorities are empty");
         }
@@ -25,6 +25,10 @@ public class Validations {
         if (!validation) {
             throw new PropertiesNotValidException("Attribute email: " + user.getEmail()  + " not valid");
         }
+    }
+
+    public boolean isAuthoritiesEmpty(BaseUserDetails user) {
+        return (user.getAuthorities() == null || user.getAuthorities().isEmpty());
     }
 
     public boolean isNameUsernamePasswordEmailEmpty(

@@ -1,0 +1,41 @@
+package br.com.feedhub.adapters.database.feedback;
+
+import br.com.feedhub.domain.feedback.Feedback;
+import br.com.feedhub.domain.security.User;
+import br.com.feedhub.infrastructure.repository.feedback.FeedbackRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class FeedbackGatewayImpl implements FeedbackGateway {
+
+    private final FeedbackRepository feedbackRepository;
+
+    public FeedbackGatewayImpl(FeedbackRepository feedbackRepository) {
+        this.feedbackRepository = feedbackRepository;
+    }
+
+    @Override
+    public Feedback save(Feedback feedback) {
+        return feedbackRepository.save(feedback);
+    }
+
+    @Override
+    public Optional<Feedback> findByIdAndAuthor(Long id, User author) {
+        return feedbackRepository.findByIdAndAuthor(id, author);
+    }
+
+    @Override
+    public Optional<List<Feedback>> findAllByAuthor(User author, Pageable pageable) {
+        return feedbackRepository.findAllByAuthor(author, pageable);
+    }
+
+    @Override
+    public Page<Feedback> findAllByFilters(String title, String description, String category, String status, Pageable pageable) {
+        return feedbackRepository.findAllByFilters(title, description, category, status, pageable);
+    }
+}

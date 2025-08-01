@@ -44,8 +44,8 @@ class ValidateTokenImplTest {
     @DisplayName("Test Validate Generated Token")
     void testValidateGeneratedToken() {
         //When
-        TokenResponse tokenResponse = jwtToken.generate("alirio-user", roles) ;
-        Boolean isValidToken = tokenImpl.validate(tokenResponse.token());
+        TokenResponse tokenResponse = jwtToken.execute("alirio-user", roles) ;
+        Boolean isValidToken = tokenImpl.execute(tokenResponse.token());
 
         //Then
         assertTrue(isValidToken);

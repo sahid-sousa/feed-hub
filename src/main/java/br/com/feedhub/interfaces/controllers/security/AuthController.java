@@ -1,7 +1,7 @@
-package br.com.feedhub.interfaces.controllers;
+package br.com.feedhub.interfaces.controllers.security;
 
 import br.com.feedhub.application.usecases.security.auth.Authenticate;
-import br.com.feedhub.interfaces.dto.request.AccountCredentials;
+import br.com.feedhub.interfaces.dto.request.security.AccountCredentials;
 import br.com.feedhub.interfaces.dto.response.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
