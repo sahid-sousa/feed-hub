@@ -1,0 +1,45 @@
+services:
+  postgres-db:
+    image: postgres:12.4
+    container_name: postgres-db
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: feedhub_development
+    ports:
+      - "5432:5432"
+    networks:
+      - db_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d $$POSTGRES_DB" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+  feed-hub:
+    build: .
+    image: feed-hub
+    container_name: feed-hub
+    environment:
+      SERVER_PORT: 8080
+      DATASOURCE_URL: jdbc:postgresql://postgres-db/feedhub_development
+      DATASOURCE_USERNAME: postgres
+      DATASOURCE_PASSWORD: postgres
+      DATASOURCE_DBCREATE: update
+      SECRET_KEY: 4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P
+      ISSUER: feedhub
+      VALIDITY: 3600000
+    ports:
+      - "8085:8080"
+    networks:
+      - db_network
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
+networks:
+  db_network:
+    driver: bridge
+
+
+

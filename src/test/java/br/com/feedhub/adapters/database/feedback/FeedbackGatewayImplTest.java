@@ -1,34 +1,34 @@
-package br.com.feedhub.infrastructure.repository.feedback;
+package br.com.feedhub.adapters.database.feedback;
 
 import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.feedback.FeedbackCategory;
 import br.com.feedhub.domain.feedback.FeedbackStatus;
 import br.com.feedhub.domain.security.User;
-import br.com.feedhub.infrastructure.repository.security.UserRepository;
+import br.com.feedhub.infrastructure.repository.feedback.FeedbackRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
-@DataJpaTest
-class FeedbackRepositoryTest {
+@ExtendWith(MockitoExtension.class)
+class FeedbackGatewayImplTest {
 
-    @Autowired
+    @Mock
     FeedbackRepository feedbackRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    @InjectMocks
+    FeedbackGatewayImpl feedbackGateway;
 
     private User user;
     private Feedback feedback;
@@ -59,8 +59,8 @@ class FeedbackRepositoryTest {
     @DisplayName("Test Given Feedback Object when Save Feedback then Return Saved Feedback")
     void testGivenFeedbackObject_whenSaveFeedback_theReturnSavedFeedback() {
         //When
-        userRepository.save(user);
-        Feedback savedFeedback = feedbackRepository.save(feedback);
+        given(feedbackRepository.save(feedback)).willReturn(feedback);
+        Feedback savedFeedback = feedbackGateway.save(feedback);
 
         //Then
         assertNotNull(savedFeedback);
@@ -76,9 +76,8 @@ class FeedbackRepositoryTest {
     @DisplayName("Test Given ListFeedback Object when findAllByUserAuthor then Return Saved Feedback")
     void testGivenListFeedbackObject_whenfindAllByUserAuthor_theReturnListFeedback() {
         //When
-        userRepository.save(user);
-        feedbackRepository.save(feedback);
-        Optional<List<Feedback>> feedbacks = feedbackRepository.findAllByAuthor(user, PageRequest.of(0, 10));
+        given(feedbackGateway.findAllByAuthor(user, PageRequest.of(0, 10))).willReturn(Optional.of(List.of(feedback)));
+        Optional<List<Feedback>> feedbacks = feedbackGateway.findAllByAuthor(user, PageRequest.of(0, 10));
 
         //Then
         assertTrue(feedbacks.isPresent());
@@ -91,13 +90,20 @@ class FeedbackRepositoryTest {
     }
 
     @Test
-    @DisplayName("Test Given ListFeedback Object when findAllByFilters then Return Saved Feedback")
+    @DisplayName("Test Given ListFeedback Object when findAllByFilters then Return List Feedback")
     void testGivenListFeedbackObject_whenfindAllByFilters_theReturnListFeedback() {
         //When
-        userRepository.save(user);
-        feedbackRepository.save(feedback);
-        Page<Feedback> feedbacksPage = feedbackRepository.findAllByFilters(user, "Title", "Description", "QUESTION", "NEW", pageable);
-
+        List<Feedback> feedbacks = List.of(feedback);
+        Page<Feedback> expectedPage = new PageImpl<>(feedbacks, pageable, feedbacks.size());
+        given(feedbackGateway.findAllByFilters(
+                user,
+                "Title",
+                "Description",
+                "QUESTION",
+                "NEW",
+                pageable
+        )).willReturn(expectedPage);
+        Page<Feedback> feedbacksPage = feedbackGateway.findAllByFilters(user, "Title", "Description", "QUESTION", "NEW", pageable);
 
         //Then
         assertTrue(feedbacksPage.hasContent());

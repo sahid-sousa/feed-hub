@@ -58,7 +58,7 @@ public class ListUserFeedbackImpl implements ListUserFeedback {
         String descriptionFilter = StringUtils.hasText(description) ? description : "";
         String categoryFilter = StringUtils.hasText(category) ? category : "";
         String statusFilter = StringUtils.hasText(status) ? status : "";
-        Page<Feedback> feedbacksPage = feedbackGateway.findAllByFilters(titleFilter, descriptionFilter, categoryFilter, statusFilter, pageable);
+        Page<Feedback> feedbacksPage = feedbackGateway.findAllByFilters(author.get(), titleFilter, descriptionFilter, categoryFilter, statusFilter, pageable);
         Page<FeedbackResponse> responsePage = feedbacksPage.map(feedback ->
                 GenericBuilder.of(FeedbackResponse::new)
                         .with(FeedbackResponse::setId, feedback.getId())

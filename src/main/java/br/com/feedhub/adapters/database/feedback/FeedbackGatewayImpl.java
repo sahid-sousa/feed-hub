@@ -35,7 +35,7 @@ public class FeedbackGatewayImpl implements FeedbackGateway {
     }
 
     @Override
-    public Page<Feedback> findAllByFilters(String title, String description, String category, String status, Pageable pageable) {
-        return feedbackRepository.findAllByFilters(title, description, category, status, pageable);
+    public Page<Feedback> findAllByFilters(User author, String title, String description, String category, String status, Pageable pageable) {
+        return feedbackRepository.findAllByFilters(author, title, description, category, status, pageable);
     }
 }

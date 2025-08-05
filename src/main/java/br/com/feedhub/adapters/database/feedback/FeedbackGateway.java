@@ -13,6 +13,7 @@ public interface FeedbackGateway {
     Optional<Feedback> findByIdAndAuthor(Long id, User author);
     Optional<List<Feedback>> findAllByAuthor(User author, Pageable pageable);
     Page<Feedback> findAllByFilters(
+            User author,
             String title,
             String description,
             String category,

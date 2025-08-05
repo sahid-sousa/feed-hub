@@ -1,0 +1,36 @@
+package br.com.feedhub.adapters.database.feedback;
+
+import br.com.feedhub.domain.feedback.Comment;
+import br.com.feedhub.domain.feedback.Feedback;
+import br.com.feedhub.domain.security.User;
+import br.com.feedhub.infrastructure.repository.feedback.CommentRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class CommentGatewayImpl implements CommentGateway {
+
+    CommentRepository commentRepository;
+
+    public CommentGatewayImpl(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
+
+    @Override
+    public Comment save(Comment comment) {
+        return commentRepository.save(comment);
+    }
+
+    @Override
+    public Optional<List<Comment>> findAllByFeedback(Feedback feedback, Pageable pageable) {
+        return commentRepository.findAllByFeedback(feedback, pageable);
+    }
+
+    @Override
+    public Optional<List<Comment>> findAllByAuthor(User author, Pageable pageable) {
+        return commentRepository.findAllByAuthor(author, pageable);
+    }
+}

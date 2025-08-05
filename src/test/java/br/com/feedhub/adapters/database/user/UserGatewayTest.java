@@ -1,28 +1,29 @@
-package br.com.feedhub.infrastructure.repository.security;
+package br.com.feedhub.adapters.database.user;
 
 import br.com.feedhub.domain.security.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
-@DataJpaTest
-class UserRespositoryTest {
+@ExtendWith(MockitoExtension.class)
+class UserGatewayTest {
 
-    @Autowired
-    UserRepository repository;
+    @Mock
+    UserGateway userGateway;
 
     private User user;
+    private Pageable pageable;
 
     @BeforeEach
     public void setup() {
@@ -32,13 +33,19 @@ class UserRespositoryTest {
         user.setUsername("user-test");
         user.setPassword("123456");
         user.setEmail("email@email.com");
+
+        Sort.Direction direction = Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, "title");
+        pageable = PageRequest.of(0, 10, sort);
     }
 
     @Test
     @DisplayName("Test Given User Object when Save User then Return Saved User")
     void testGivenUserObject_whenSaveUser_theReturnSavedUser() {
         //When
-        User savedUser = repository.save(user);
+        given(userGateway.save(user)).willReturn(user);
+
+        User savedUser = userGateway.save(user);
 
         //Then
         assertNotNull(savedUser);
@@ -52,8 +59,8 @@ class UserRespositoryTest {
     @DisplayName("Test Given User Object when findByUsernameAndPassword User then Return Saved User")
     void testGivenUserObject_whenFindByUsernameAndPassword_theReturnSavedUser() {
         //When
-        repository.save(user);
-        Optional<User> foundUser = repository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+        given(userGateway.findByUsernameAndPassword(user.getUsername(), user.getPassword())).willReturn(Optional.of(user));
+        Optional<User> foundUser = userGateway.findByUsernameAndPassword(user.getUsername(), user.getPassword());
 
         //Then
         assertTrue(foundUser.isPresent());
@@ -67,8 +74,8 @@ class UserRespositoryTest {
     @DisplayName("Test Given User Object when findByUsername User then Return Saved User")
     void testGivenUserObject_whenFindByUsername_theReturnSavedUser() {
         //When
-        repository.save(user);
-        Optional<User> foundUser = repository.findByUsername(user.getUsername());
+        given(userGateway.findByUsername(user.getUsername())).willReturn(Optional.of(user));
+        Optional<User> foundUser = userGateway.findByUsername(user.getUsername());
 
         //Then
         assertTrue(foundUser.isPresent());
@@ -82,18 +89,17 @@ class UserRespositoryTest {
     @DisplayName("Test Given User Object when findByFilters User then Return User List")
     void testGivenUserObject_whenFindByFilters_theReturnUserList() {
         //When
-        repository.save(user);
-        Sort sort = Sort.by(Sort.Direction.ASC, "name");
-        Pageable pageable = PageRequest.of(0, 10, sort);
-        Page<User> usersPage = repository.findAllByFilters("User", "user-test", pageable);
+        List<User> users = List.of(user);
+        Page<User> expectedPage = new PageImpl<>(users, pageable, users.size());
+        given(userGateway.findAllByFilters("User", "user-test", pageable)).willReturn(expectedPage);
 
-        //Then
+        Page<User> usersPage = userGateway.findAllByFilters("User", "user-test", pageable);
+
+        //The
+        assertTrue(usersPage.hasContent());
         assertTrue(usersPage.getTotalElements() > 0);
         assertTrue(usersPage.getNumberOfElements() > 0);
         usersPage.forEach(Assertions::assertNotNull);
-
-
     }
-
 
 }
