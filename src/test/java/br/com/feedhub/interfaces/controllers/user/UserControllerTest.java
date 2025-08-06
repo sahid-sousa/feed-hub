@@ -105,7 +105,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test Receive Params whenList then Return PageListResponse")
-    void testReceiveParams_whenList_theResponse_thenReturnPageListResponse() {
+    void testReceiveParams_whenList_thenResponse_thenReturnPageListResponse() {
         //Given
         var expectedPage = new PageListResponse<>(List.of(userCreateResponse), 0, 10, 1, 1, true);
         given(listUser.execute(anyString(), anyString(), anyInt(), anyInt(), anyString(), anyString()))

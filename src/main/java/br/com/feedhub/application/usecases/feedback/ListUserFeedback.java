@@ -1,6 +1,5 @@
 package br.com.feedhub.application.usecases.feedback;
 
-import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.interfaces.dto.response.FeedbackResponse;
 import br.com.feedhub.interfaces.dto.response.PageListResponse;
 import jakarta.servlet.http.HttpServletRequest;

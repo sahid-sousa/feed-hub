@@ -15,7 +15,7 @@
     <description>feed-hub</description>
 
     <properties>
-        <commons.version>3.14.0</commons.version>
+        <commons.version>3.18.0</commons.version>
         <java.version>21</java.version>
         <postgresql.version>42.7.7</postgresql.version>
         <java.jwt.version>4.4.0</java.jwt.version>

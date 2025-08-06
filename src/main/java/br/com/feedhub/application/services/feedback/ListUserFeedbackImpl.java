@@ -10,12 +10,11 @@ import br.com.feedhub.interfaces.dto.response.FeedbackResponse;
 import br.com.feedhub.interfaces.dto.response.PageListResponse;
 import br.com.feedhub.interfaces.exceptions.RequiredObjectIsNullException;
 import br.com.feedhub.utils.GenericBuilder;
-import jakarta.servlet.GenericFilter;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 

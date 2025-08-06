@@ -1,5 +1,7 @@
 package br.com.feedhub.interfaces.dto.request.feedback;
 
+import br.com.feedhub.domain.feedback.Feedback;
+
 import java.time.LocalDateTime;
 
 public abstract class FeedbackDetails {
