@@ -10,9 +10,7 @@ import br.com.feedhub.domain.security.User;
 import br.com.feedhub.interfaces.dto.request.feedback.FeedbackUpdateRequest;
 import br.com.feedhub.interfaces.dto.response.FeedbackResponse;
 import br.com.feedhub.interfaces.exceptions.RequiredObjectIsNullException;
-import br.com.feedhub.interfaces.exceptions.ResourceNotFoundException;
 import br.com.feedhub.utils.GenericBuilder;
-import br.com.feedhub.utils.Validations;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
@@ -37,11 +35,11 @@ public class UpdateFeedbackImpl implements UpdateFeedback {
         String username = extractUsername.execute(request.getHeader("Authorization"));
         Optional<User> optionalUser = userGateway.findByUsername(username);
         if (optionalUser.isEmpty()) {
-            throw new ResourceNotFoundException("Username" + username + " not exists");
+            throw new RequiredObjectIsNullException("Username " + username + " not exists");
         }
         Optional<Feedback> optionalFeedback = feedbackGateway.findByIdAndAuthor(feedbackUpdateRequest.getId(), optionalUser.get());
         if (optionalFeedback.isEmpty()) {
-            throw new RequiredObjectIsNullException("Feedback" + feedbackUpdateRequest.getId() + " not exists");
+            throw new RequiredObjectIsNullException("Feedback with id " + feedbackUpdateRequest.getId() + " not exists");
         }
         Feedback feedback = GenericBuilder.of(optionalFeedback.get())
                 .with(Feedback::setTitle, feedbackUpdateRequest.getTitle())

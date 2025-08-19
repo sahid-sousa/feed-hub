@@ -35,7 +35,7 @@ public class CreateFeedbackImpl implements CreateFeedback {
         String username = extractUsername.execute(request.getHeader("Authorization"));
         Optional<User> author = userGateway.findByUsername(username);
         if (author.isEmpty()) {
-            throw new RequiredObjectIsNullException("Author with id: " + username + " not found");
+            throw new RequiredObjectIsNullException("Author with username " + username + " not found");
         }
         Feedback feedback = createFeedback(author.get(), feedbackCreateRequest);
         return GenericBuilder.of(FeedbackResponse::new)

@@ -20,6 +20,11 @@ public class FeedbackGatewayImpl implements FeedbackGateway {
     }
 
     @Override
+    public Optional<Feedback> findById(Long id) {
+        return feedbackRepository.findById(id);
+    }
+
+    @Override
     public Feedback save(Feedback feedback) {
         return feedbackRepository.save(feedback);
     }

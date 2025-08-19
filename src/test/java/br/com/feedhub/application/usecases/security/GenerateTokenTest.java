@@ -1,4 +1,4 @@
-package br.com.feedhub.application.usecases;
+package br.com.feedhub.application.usecases.security;
 
 import br.com.feedhub.application.usecases.security.auth.GenerateToken;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -74,9 +74,17 @@ class FeedbackControllerTest {
     void testReceiveParam_whenList_thenResponse_thenReturnPageListResponse() {
         //Given
         var expectedPage = new PageListResponse<>(List.of(feedbackResponse),0, 10, 1, 1, true);
-        given(listUserFeedback.execute(anyString(), anyString(), anyString(), anyString(), anyInt(), anyInt(), anyString(), anyString(), any(HttpServletRequest.class)))
+        given(listUserFeedback.execute(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyInt(),
+                anyInt(),
+                anyString(),
+                anyString(),
+                any(HttpServletRequest.class)))
                 .willReturn(expectedPage);
-
         //When
         ResponseEntity<?> responseEntity = feedbackController.list(
                 "Bug",

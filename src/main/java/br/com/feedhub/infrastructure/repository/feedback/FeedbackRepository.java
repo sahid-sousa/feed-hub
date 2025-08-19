@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public interface FeedbackRepository extends Repository<Feedback, Long> {
     Feedback save(Feedback feedback);
+    Optional<Feedback> findById(Long id);
     Optional<Feedback> findByIdAndAuthor(Long id, User author);
     Optional<List<Feedback>> findAllByAuthor(User author, Pageable pageable);
     @Query("SELECT f FROM Feedback f WHERE f.author = :author AND" +

@@ -23,7 +23,6 @@ import java.util.Map;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     JwtTokenProvider jwtTokenProvider;
 
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -58,6 +57,8 @@ public class SecurityConfig {
             "/user/list/**",
             "/feedback/create",
             "/feedback/list/**",
+            "/comment/create",
+            "/comment/update/**"
     };
 
     @Bean

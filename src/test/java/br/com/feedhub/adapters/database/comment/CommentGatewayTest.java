@@ -1,6 +1,6 @@
-package br.com.feedhub.adapters.database.feedback;
+package br.com.feedhub.adapters.database.comment;
 
-import br.com.feedhub.domain.feedback.Comment;
+import br.com.feedhub.domain.comment.Comment;
 import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.feedback.FeedbackCategory;
 import br.com.feedhub.domain.feedback.FeedbackStatus;

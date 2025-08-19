@@ -1,11 +1,11 @@
-package br.com.feedhub.adapters.database.feedback;
+package br.com.feedhub.adapters.database.comment;
 
-import br.com.feedhub.domain.feedback.Comment;
+import br.com.feedhub.domain.comment.Comment;
 import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.feedback.FeedbackCategory;
 import br.com.feedhub.domain.feedback.FeedbackStatus;
 import br.com.feedhub.domain.security.User;
-import br.com.feedhub.infrastructure.repository.feedback.CommentRepository;
+import br.com.feedhub.infrastructure.repository.comment.CommentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

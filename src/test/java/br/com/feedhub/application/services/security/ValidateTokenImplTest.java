@@ -1,4 +1,4 @@
-package br.com.feedhub.application.services;
+package br.com.feedhub.application.services.security;
 
 import br.com.feedhub.application.services.security.auth.GenerateTokenImpl;
 import br.com.feedhub.application.services.security.auth.ValidateTokenImpl;

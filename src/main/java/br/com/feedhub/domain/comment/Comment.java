@@ -1,5 +1,6 @@
-package br.com.feedhub.domain.feedback;
+package br.com.feedhub.domain.comment;
 
+import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.security.User;
 import jakarta.persistence.*;
 
