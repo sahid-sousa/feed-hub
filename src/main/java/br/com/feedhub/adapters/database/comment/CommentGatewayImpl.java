@@ -4,6 +4,7 @@ import br.com.feedhub.domain.comment.Comment;
 import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.security.User;
 import br.com.feedhub.infrastructure.repository.comment.CommentRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,10 @@ public class CommentGatewayImpl implements CommentGateway {
     @Override
     public Optional<List<Comment>> findAllByAuthor(User author, Pageable pageable) {
         return commentRepository.findAllByAuthor(author, pageable);
+    }
+
+    @Override
+    public Page<Comment> findAllByFilters(Feedback feedback, Pageable pageable) {
+        return commentRepository.findAllByFilters(feedback, pageable);
     }
 }

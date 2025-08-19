@@ -31,8 +31,8 @@ class GenerateTokenImplTest {
                 "feedhub"
         );
 
-        username = "alirio-user";
-        roles = List.of("ROLE_USEER", "ROLE_ADMIN");
+        username = "user-test";
+        roles = List.of("ROLE_USER", "ROLE_ADMIN");
     }
 
 
@@ -40,7 +40,7 @@ class GenerateTokenImplTest {
     @DisplayName("Test Generate JWT Token")
     void testGenerateJwtToken() {
         //When
-        TokenResponse tokenResponse = jwtToken.execute("alirio-user", roles) ;
+        TokenResponse tokenResponse = jwtToken.execute("user-test", roles) ;
 
         //Then
         assertNotNull(tokenResponse);

@@ -37,7 +37,7 @@ class ValidateTokenImplTest {
         tokenImpl = new ValidateTokenImpl("4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P");
 
         username = "alirio-user";
-        roles = List.of("ROLE_USEER", "ROLE_ADMIN");
+        roles = List.of("ROLE_USER", "ROLE_ADMIN");
     }
 
     @Test

@@ -13,8 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -82,12 +81,11 @@ class ListUserFeedbackTest {
                 request
         );
 
-        //When
+        //Then
         assertNotNull(response);
         assertEquals(1, response.content().size());
         assertEquals(1, response.totalElements());
         assertEquals(10, response.size());
-
     }
 
 }

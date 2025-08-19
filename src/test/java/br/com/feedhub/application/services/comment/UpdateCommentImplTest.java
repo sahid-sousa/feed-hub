@@ -47,7 +47,6 @@ class UpdateCommentImplTest {
 
     private User user;
     private Comment comment;
-    private Feedback feedback;
     private CommentUpdateRequest commentUpdateRequest;
     private String bearerToken;
 
@@ -61,7 +60,7 @@ class UpdateCommentImplTest {
         user.setPassword("123456");
         user.setEmail("email@email.com");
 
-        feedback = new Feedback();
+        Feedback feedback = new Feedback();
         feedback.setId(1L);
         feedback.setAuthor(user);
         feedback.setTitle("Title");
