@@ -58,7 +58,8 @@ public class SecurityConfig {
             "/feedback/create",
             "/feedback/list/**",
             "/comment/create",
-            "/comment/update/**"
+            "/comment/update/**",
+            "/comment/list/**"
     };
 
     @Bean

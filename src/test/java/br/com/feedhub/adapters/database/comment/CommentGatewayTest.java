@@ -5,15 +5,14 @@ import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.feedback.FeedbackCategory;
 import br.com.feedhub.domain.feedback.FeedbackStatus;
 import br.com.feedhub.domain.security.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +30,7 @@ class CommentGatewayTest {
 
     private Comment comment;
     private Feedback feedback;
+    private Pageable pageable;
     private User author;
 
     @BeforeEach
@@ -62,6 +62,10 @@ class CommentGatewayTest {
         comment.setFeedback(feedback);
         comment.setDateCreated(LocalDateTime.now());
         comment.setLastUpdated(LocalDateTime.now());
+
+        Sort.Direction direction = Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, "title");
+        pageable = PageRequest.of(0, 10, sort);
     }
 
 
@@ -110,6 +114,24 @@ class CommentGatewayTest {
         assertTrue(optionalCommentList.isPresent());
         assertFalse(optionalCommentList.get().isEmpty());
         assertEquals(1, optionalCommentList.get().size());
+    }
+
+    @Test
+    @DisplayName("Test Given Comments Object when findAllByFilters then Return Comments")
+    void testGivenCommentsObject_whenFindAllByFilters_theReturnComments() {
+        //Given
+        List<Comment> comments = List.of(comment);
+        Page<Comment> expectedPage = new PageImpl<>(comments);
+        given(commentGateway.findAllByFilters(feedback, pageable)).willReturn(expectedPage);
+
+        //When
+        Page<Comment> commentsPage = commentGateway.findAllByFilters(feedback, pageable);
+
+        //Then
+        assertTrue(commentsPage.hasContent());
+        assertTrue(commentsPage.getTotalElements() > 0);
+        assertTrue(commentsPage.getNumberOfElements() > 0);
+        commentsPage.forEach(Assertions::assertNotNull);
     }
 
 }

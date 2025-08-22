@@ -7,11 +7,13 @@ import br.com.feedhub.domain.feedback.FeedbackStatus;
 import br.com.feedhub.domain.security.User;
 import br.com.feedhub.infrastructure.repository.feedback.FeedbackRepository;
 import br.com.feedhub.infrastructure.repository.security.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
@@ -81,6 +83,50 @@ class CommentRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test given CommentObject when FindById then Return Comment")
+    void testGivenCommentObject_whenFindById_theReturnComment() {
+        //Given
+        userRepository.save(author);
+        feedbackRepository.save(feedback);
+        commentRepository.save(comment);
+
+        //When
+        Optional<Comment> optionalComment = commentRepository.findById(comment.getId());
+
+        //Then
+        assertTrue(optionalComment.isPresent());
+        assertEquals("Author", optionalComment.get().getAuthor().getName());
+        assertEquals("user-author", optionalComment.get().getAuthor().getUsername());
+        assertEquals("123456", optionalComment.get().getAuthor().getPassword());
+        assertEquals("email@email.com", optionalComment.get().getAuthor().getEmail());
+
+        assertEquals("Title", optionalComment.get().getFeedback().getTitle());
+        assertEquals("Description", optionalComment.get().getFeedback().getDescription());
+    }
+
+    @Test
+    @DisplayName("Test given CommentObject when FindByIdAndAuthor then Return Comment")
+    void testGivenCommentObject_whenFindByIdAndAuthor_theReturnComment() {
+        //Given
+        userRepository.save(author);
+        feedbackRepository.save(feedback);
+        commentRepository.save(comment);
+
+        //When
+        Optional<Comment> optionalComment = commentRepository.findByIdAndAuthor(comment.getId(), author);
+
+        //Then
+        assertTrue(optionalComment.isPresent());
+        assertEquals("Author", optionalComment.get().getAuthor().getName());
+        assertEquals("user-author", optionalComment.get().getAuthor().getUsername());
+        assertEquals("123456", optionalComment.get().getAuthor().getPassword());
+        assertEquals("email@email.com", optionalComment.get().getAuthor().getEmail());
+
+        assertEquals("Title", optionalComment.get().getFeedback().getTitle());
+        assertEquals("Description", optionalComment.get().getFeedback().getDescription());
+    }
+
+    @Test
     @DisplayName("Test Given Comments Object when findAllByFeedback then Return Comments")
     void testGivenCommentsObject_whenFindAllByFeedback_theReturnComments() {
         //When
@@ -105,10 +151,12 @@ class CommentRepositoryTest {
     @Test
     @DisplayName("Test Given Comments Object when findAllByAuthor then Return Comments")
     void testGivenCommentsObject_whenFindAllByAuthor_theReturnComments() {
-        //When
+        //Given
         userRepository.save(author);
         feedbackRepository.save(feedback);
         commentRepository.save(comment);
+
+        //When
         Optional<List<Comment>> comments = commentRepository.findAllByAuthor(author, PageRequest.of(0, 10));
 
         //Then
@@ -121,6 +169,24 @@ class CommentRepositoryTest {
 
         assertEquals("Title", comments.get().getFirst().getFeedback().getTitle());
         assertEquals("Description", comments.get().getFirst().getFeedback().getDescription());
+    }
+
+    @Test
+    @DisplayName("Test Given Comments Object when findAllByFilters then Return Comments")
+    void testGivenCommentsObject_whenFindAllByFilters_theReturnComments() {
+        //Given
+        userRepository.save(author);
+        feedbackRepository.save(feedback);
+        commentRepository.save(comment);
+
+        //When
+        Page<Comment> commentsPage = commentRepository.findAllByFilters(feedback, PageRequest.of(0, 10));
+
+        //Then
+        assertTrue(commentsPage.hasContent());
+        assertTrue(commentsPage.getTotalElements() > 0);
+        assertTrue(commentsPage.getTotalPages() > 0);
+        commentsPage.forEach(Assertions::assertNotNull);
     }
 
 }

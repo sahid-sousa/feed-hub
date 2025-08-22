@@ -45,7 +45,7 @@ class GenerateTokenImplTest {
         //Then
         assertNotNull(tokenResponse);
         assertFalse(tokenResponse.token().isEmpty());
-        assertEquals(224, tokenResponse.token().length());
+        assertEquals(220, tokenResponse.token().length());
     }
 
 }

@@ -56,8 +56,8 @@ class ListCommentTest {
                 anyInt(),
                 anyInt(),
                 anyString(),
-                anyString()
-
+                anyString(),
+                any()
         )).willReturn(pageListResponse);
 
         //When
@@ -66,7 +66,8 @@ class ListCommentTest {
                 anyInt(),
                 anyInt(),
                 anyString(),
-                anyString()
+                anyString(),
+                any()
         );
 
         //Then

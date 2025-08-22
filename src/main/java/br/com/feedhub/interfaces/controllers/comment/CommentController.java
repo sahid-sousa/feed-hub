@@ -98,9 +98,10 @@ public class CommentController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "dateCreated") String sortBy,
-            @RequestParam(value = "direction", defaultValue = "asc") String sortDirection
+            @RequestParam(value = "direction", defaultValue = "asc") String sortDirection,
+            HttpServletRequest request
     ) {
-        var commentList = listComment.execute(feedbackId, page, size, sortBy, sortDirection);
+        var commentList = listComment.execute(feedbackId, page, size, sortBy, sortDirection, request);
         return ResponseEntity.ok().body(commentList);
     }
 

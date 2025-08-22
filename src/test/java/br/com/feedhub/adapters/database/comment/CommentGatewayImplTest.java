@@ -6,6 +6,7 @@ import br.com.feedhub.domain.feedback.FeedbackCategory;
 import br.com.feedhub.domain.feedback.FeedbackStatus;
 import br.com.feedhub.domain.security.User;
 import br.com.feedhub.infrastructure.repository.comment.CommentRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,9 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +34,7 @@ class CommentGatewayImplTest {
 
     private Comment comment;
     private Feedback feedback;
+    private Pageable pageable;
     private User author;
 
     @BeforeEach
@@ -66,11 +66,15 @@ class CommentGatewayImplTest {
         comment.setFeedback(feedback);
         comment.setDateCreated(LocalDateTime.now());
         comment.setLastUpdated(LocalDateTime.now());
+
+        Sort.Direction direction = Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, "title");
+        pageable = PageRequest.of(0, 10, sort);
     }
 
     @Test
     @DisplayName("Test Given Comment Object when Save Comment then Return Saved Comment")
-    void testGivenFeedbackObject_whenSaveFeedback_theReturnSavedFeedback() {
+    void testGivenCommentObject_whenSaveComment_theReturnSavedComment() {
         //When
         given(commentRepository.save(comment)).willReturn(comment);
         Comment savedComment = commentGateway.save(comment);
@@ -82,8 +86,20 @@ class CommentGatewayImplTest {
     }
 
     @Test
-    @DisplayName("Test Given ListComment Object when findAllByFeedback then Return Saved Comments")
-    void testGivenListCommentObject_whenfindAllByFeedback_theReturnListComments() {
+    @DisplayName("Test given CommentObject when FindById then Return Comment")
+    void testGivenCommentObject_whenFindById_theReturnComment() {
+
+    }
+
+    @Test
+    @DisplayName("Test given CommentObject when FindByIdAndAuthor then Return Comment")
+    void testGivenCommentObject_whenFindByIdAndAuthor_theReturnComment() {
+
+    }
+
+    @Test
+    @DisplayName("Test Given Comments Object when findAllByFeedback then Return Comments")
+    void testGivenCommentsObject_whenFindAllByFeedback_theReturnComments() {
         //When
         Sort.Direction  direction = Sort.Direction.ASC;
         Sort sort = Sort.by(direction, "dateCreated");
@@ -113,6 +129,24 @@ class CommentGatewayImplTest {
         assertTrue(optionalCommentList.isPresent());
         assertFalse(optionalCommentList.get().isEmpty());
         assertEquals(1, optionalCommentList.get().size());
+    }
+
+    @Test
+    @DisplayName("Test Given Comments Object when findAllByFilters then Return Comments")
+    void testGivenCommentsObject_whenFindAllByFilters_theReturnComments() {
+        //Given
+        List<Comment> comments = List.of(comment);
+        Page<Comment> expectedPage = new PageImpl<>(comments, pageable, comments.size());
+        given(commentGateway.findAllByFilters(feedback, pageable)).willReturn(expectedPage);
+
+        //When
+        Page<Comment> commentsPage = commentGateway.findAllByFilters(feedback, pageable);
+
+        //Then
+        assertTrue(commentsPage.hasContent());
+        assertTrue(commentsPage.getTotalElements() > 0);
+        assertTrue(commentsPage.getNumberOfElements() > 0);
+        commentsPage.forEach(Assertions::assertNotNull);
     }
 
 }
