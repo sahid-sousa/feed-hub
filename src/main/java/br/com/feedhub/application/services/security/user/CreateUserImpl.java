@@ -9,6 +9,7 @@ import br.com.feedhub.domain.security.User;
 import br.com.feedhub.interfaces.dto.request.user.RoleDto;
 import br.com.feedhub.interfaces.dto.request.user.UserCreateRequest;
 import br.com.feedhub.interfaces.dto.response.UserResponse;
+import br.com.feedhub.interfaces.exceptions.PropertiesNotValidException;
 import br.com.feedhub.interfaces.exceptions.ResourceFoundException;
 import br.com.feedhub.utils.GenericBuilder;
 import br.com.feedhub.utils.Validations;
@@ -45,7 +46,9 @@ public class CreateUserImpl implements CreateUser {
 
     @Override
     public UserResponse execute(UserCreateRequest userCreateRequest) {
-        validations.isValidEmail(userCreateRequest.getEmail());
+        if (!validations.isValidEmail(userCreateRequest.getEmail())) {
+            throw new PropertiesNotValidException("Attribute email: " + userCreateRequest.getEmail()  + " not valid");
+        }
         if (userGateway.findByUsername(userCreateRequest.getUsername()).isPresent()) {
             throw new ResourceFoundException("Username already exists");
         }

@@ -3,13 +3,12 @@ package br.com.feedhub.application.services.security.user;
 import br.com.feedhub.adapters.database.user.UserGateway;
 import br.com.feedhub.adapters.database.user.UserRoleGateway;
 import br.com.feedhub.application.usecases.security.auth.ExtractUsername;
-import br.com.feedhub.application.usecases.security.user.CreateRole;
-import br.com.feedhub.application.usecases.security.user.CreateUserRole;
 import br.com.feedhub.application.usecases.security.user.UpdateUser;
 import br.com.feedhub.domain.security.User;
 import br.com.feedhub.interfaces.dto.request.user.RoleDto;
 import br.com.feedhub.interfaces.dto.request.user.UserUpdateRequest;
 import br.com.feedhub.interfaces.dto.response.UserResponse;
+import br.com.feedhub.interfaces.exceptions.PropertiesNotValidException;
 import br.com.feedhub.interfaces.exceptions.RequiredObjectIsNullException;
 import br.com.feedhub.interfaces.exceptions.ResourceFoundException;
 import br.com.feedhub.interfaces.exceptions.ResourceNotFoundException;
@@ -49,7 +48,9 @@ public class UpdateUserImpl implements UpdateUser {
     @Override
     public UserResponse execute(UserUpdateRequest userUpdateRequest, HttpServletRequest request) {
         String username = extractUsername.execute(request.getHeader("Authorization"));
-        validations.isValidEmail(userUpdateRequest.getEmail());
+        if (!validations.isValidEmail(userUpdateRequest.getEmail())) {
+            throw new PropertiesNotValidException("Attribute email: " + userUpdateRequest.getEmail()  + " not valid");
+        }
         if (userGateway.findByUsername(username).isEmpty()) {
             throw new ResourceNotFoundException("Username not exists");
         }

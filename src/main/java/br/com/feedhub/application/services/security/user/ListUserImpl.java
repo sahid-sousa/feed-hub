@@ -1,6 +1,5 @@
 package br.com.feedhub.application.services.security.user;
 
-import br.com.feedhub.adapters.database.user.RoleGateway;
 import br.com.feedhub.adapters.database.user.UserGateway;
 import br.com.feedhub.adapters.database.user.UserRoleGateway;
 import br.com.feedhub.application.usecases.security.user.ListUser;
@@ -27,7 +26,6 @@ public class ListUserImpl implements ListUser {
 
     public ListUserImpl(
             UserGateway userGateway,
-            RoleGateway roleGateway,
             UserRoleGateway userRoleGateway
     ) {
         this.userGateway = userGateway;
@@ -61,17 +59,13 @@ public class ListUserImpl implements ListUser {
     }
 
     public List<RoleDto> getRoles(User user) {
-        List<RoleDto > roles = new ArrayList<>();
-        userRoleGateway.findAllByUser(user).ifPresent(userRoles -> {
-            userRoles.forEach(userRole -> {
-                roles.add(
-                        GenericBuilder.of(RoleDto::new)
-                                .with(RoleDto::setAuthority, userRole.getRole().getAuthority())
-                                .with(RoleDto::setDescription, userRole.getRole().getName())
-                                .build()
-                );
-            });
-        });
+        List<RoleDto> roles = new ArrayList<>();
+        userRoleGateway.findAllByUser(user).ifPresent(userRoles -> userRoles.forEach(userRole -> roles.add(
+                GenericBuilder.of(RoleDto::new)
+                        .with(RoleDto::setAuthority, userRole.getRole().getAuthority())
+                        .with(RoleDto::setDescription, userRole.getRole().getName())
+                        .build()
+        )));
         return roles;
     }
 }
