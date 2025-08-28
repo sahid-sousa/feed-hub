@@ -17,7 +17,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +34,12 @@ public class AuthenticateImplTest {
 
     @InjectMocks
     AuthenticateImpl authenticate;
+
+    @Mock
+    AuthenticationManager authenticationManager;
+
+    @Mock
+    Authentication authentication;
 
     @Mock
     PasswordEncoder passwordEncoder;
@@ -87,6 +95,7 @@ public class AuthenticateImplTest {
         given(passwordEncoder.matches(anyString(), anyString())).willReturn(true);
         given(userRoleGateway.findAllByUser(any())).willReturn(Optional.of(List.of(userRole)));
         given(generateToken.execute(anyString(), anyList())).willReturn(tokenResponse);
+        given(authenticationManager.authenticate(any())).willReturn(authentication);
         //When
         TokenResponse response = authenticate.signin(accountCredentials);
 
