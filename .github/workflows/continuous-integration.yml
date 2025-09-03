@@ -32,7 +32,7 @@ jobs:
       
     - name: Push to Docker Hub Container Registry
       run: |
-        docker tag feed-hub:latest ${{ secrets.DOCKER_USERNAME }}/feed-hub-app:${{ github.run_id }}
-        docker tag feed-hub:latest ${{ secrets.DOCKER_USERNAME }}/feed-hubt-app:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/feed-hub-app:${{ github.run_id }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/feed-hub-app:latest
+        docker tag feed-hub:latest ${{ secrets.DOCKER_USERNAME }}/feed-hub:${{ github.run_id }}
+        docker tag feed-hub:latest ${{ secrets.DOCKER_USERNAME }}/feed-hub:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/feed-hub:${{ github.run_id }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/feed-hub:latest
