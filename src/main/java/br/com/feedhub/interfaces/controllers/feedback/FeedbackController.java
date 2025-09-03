@@ -2,6 +2,7 @@ package br.com.feedhub.interfaces.controllers.feedback;
 
 import br.com.feedhub.application.usecases.feedback.CreateFeedback;
 import br.com.feedhub.application.usecases.feedback.ListUserFeedback;
+import br.com.feedhub.application.usecases.feedback.UpdateFeedback;
 import br.com.feedhub.interfaces.dto.request.feedback.FeedbackCreateRequest;
 import br.com.feedhub.interfaces.dto.request.feedback.FeedbackUpdateRequest;
 import br.com.feedhub.interfaces.dto.response.FeedbackResponse;
@@ -23,10 +24,12 @@ public class FeedbackController {
 
     private final CreateFeedback createFeedback;
     private final ListUserFeedback listUserFeedback;
+    private final UpdateFeedback updateFeedback;
 
-    public FeedbackController(CreateFeedback createFeedback, ListUserFeedback listUserFeedback) {
+    public FeedbackController(CreateFeedback createFeedback, ListUserFeedback listUserFeedback, UpdateFeedback updateFeedback) {
         this.createFeedback = createFeedback;
         this.listUserFeedback = listUserFeedback;
+        this.updateFeedback = updateFeedback;
     }
 
     @Operation(
@@ -67,7 +70,8 @@ public class FeedbackController {
     )
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody FeedbackUpdateRequest feedback, HttpServletRequest request) {
-        return ResponseEntity.ok().build();
+        FeedbackResponse feedbackResponse = updateFeedback.execute(feedback, request);
+        return ResponseEntity.ok().body(feedbackResponse);
     }
 
     @Operation(

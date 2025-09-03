@@ -52,7 +52,14 @@ public class ListCommentImpl implements ListComment {
         }
         Page<Comment> commentsPage = commentGateway.findAllByFilters(feedback.get(), pageable);
         Page<CommentResponse> responsePage = commentsPage.map( comment ->
-                GenericBuilder.of(CommentResponse::new).build()
+                GenericBuilder.of(CommentResponse::new)
+                        .with(CommentResponse::setContent, comment.getContent())
+                        .with(CommentResponse::setId, comment.getId())
+                        .with(CommentResponse::setFeedbackId, comment.getFeedback().getId())
+                        .with(CommentResponse::setAuthorId, comment.getAuthor().getId())
+                        .with(CommentResponse::setDateCreated, comment.getDateCreated())
+                        .with(CommentResponse::setLastUpdated, comment.getLastUpdated())
+                        .build()
         );
         return PageListResponse.of(responsePage);
     }
