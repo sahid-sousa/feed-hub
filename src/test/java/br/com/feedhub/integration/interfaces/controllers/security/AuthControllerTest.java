@@ -1,6 +1,5 @@
 package br.com.feedhub.integration.interfaces.controllers.security;
 
-import br.com.feedhub.integration.config.AbstractIntegrationTest;
 import br.com.feedhub.integration.config.IntegrationCommonsTest;
 import br.com.feedhub.integration.config.TestConfigs;
 import br.com.feedhub.interfaces.dto.request.security.AccountCredentials;

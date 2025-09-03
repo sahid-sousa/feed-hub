@@ -1,13 +1,15 @@
 package br.com.feedhub.integration.interfaces.controllers.user;
 
-import br.com.feedhub.integration.config.AbstractIntegrationTest;
 import br.com.feedhub.integration.config.IntegrationCommonsTest;
 import br.com.feedhub.integration.config.TestConfigs;
 import br.com.feedhub.interfaces.dto.request.user.UserUpdateRequest;
 import br.com.feedhub.interfaces.dto.response.PageListResponse;
 import br.com.feedhub.interfaces.dto.response.UserResponse;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static io.restassured.RestAssured.given;
