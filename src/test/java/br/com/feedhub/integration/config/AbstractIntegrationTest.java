@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @ContextConfiguration(initializers = AbstractIntegrationTest.Initializer.class)
-public abstract class AbstractIntegrationTest {
+public class AbstractIntegrationTest {
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
