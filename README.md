@@ -1,3 +1,5 @@
+[![Continuous Integration With Github Actions](https://github.com/sahid-sousa/feed-hub/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/sahid-sousa/feed-hub/actions/workflows/continuous-integration.yml)
+
 # 📡 Feed Hub
 
 Feed Hub é uma API desenvolvida em Java com Spring Boot e Mavem, utilizando PostgreSQL como banco de dados. O projeto está containerizado com Docker para facilitar o ambiente de desenvolvimento e execução.
