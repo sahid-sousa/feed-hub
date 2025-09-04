@@ -1,4 +1,8 @@
-[![Continuous Integration With Github Actions](https://github.com/sahid-sousa/feed-hub/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/sahid-sousa/feed-hub/actions/workflows/continuous-integration.yml)
+![Java 21](https://img.shields.io/badge/Java-21-blue?logo=java&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-Build%20Tool-C71A36?logo=apachemaven&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?logo=springboot&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)
+[![Continuous Integration With Github Actions](https://github.com/sahid-sousa/rest-with-spring-boot/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/sahid-sousa/rest-with-spring-boot/actions/workflows/continuous-integration.yml)
 
 # 📡 Feed Hub
 
