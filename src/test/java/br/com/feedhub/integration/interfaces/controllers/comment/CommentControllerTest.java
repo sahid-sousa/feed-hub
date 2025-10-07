@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class CommentControllerTest extends IntegrationCommonsTest {
 
     protected static Long feedbackId;
+    protected static Long commentId;
 
     @Test
     @Order(0)
@@ -78,6 +79,8 @@ public class CommentControllerTest extends IntegrationCommonsTest {
                 .extract().body()
                 .as(CommentResponse.class);
 
+        commentId = commentResponse.getId();
+
         assertNotNull(commentResponse);
         assertEquals("Parou de executar", commentResponse.getContent());
 
@@ -88,7 +91,7 @@ public class CommentControllerTest extends IntegrationCommonsTest {
     @DisplayName("PUT /comment/update - Should update a new comment")
     public void updateComment() {
         CommentUpdateRequest commentUpdateRequest = new CommentUpdateRequest(
-                feedbackId,
+                commentId,
                 "Funcionou corretamente"
         );
 
