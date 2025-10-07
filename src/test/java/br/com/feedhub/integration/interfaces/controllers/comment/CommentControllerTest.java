@@ -113,7 +113,7 @@ public class CommentControllerTest extends IntegrationCommonsTest {
     @DisplayName("GET /comment/list - Should list a comments")
     public void listComment() {
         var commentList = given().spec(specification)
-                .basePath("/comment/list/1")
+                .basePath("/comment/list/" + feedbackId)
                 .port(TestConfigs.SERVER_PORT)
                 .get()
                 .then()
