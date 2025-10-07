@@ -82,6 +82,7 @@ public class AuthenticateImplTest {
         tokenResponse = new TokenResponse(
                 "user-test",
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6WyJST0xFX1VTRUVSIiwiUk9MRV9BRE1JTiJdLCJpc3MiOiJmZWVkaHViIiwiaWF0IjoxNzUyMDM1NjQyLCJleHAiOjE3NTIwMzkyNDIsInN1YiI6ImFsaXJpby11c2VyIn0.-6HFVDjpD4yn-QHqc95a8p4NukSywt7NmISCBuBQbOQ",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );

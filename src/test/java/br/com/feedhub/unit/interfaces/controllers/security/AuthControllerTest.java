@@ -34,7 +34,7 @@ class AuthControllerTest {
     @BeforeEach
     public void setup() {
         accountCredentials = new AccountCredentials("user-test", "123456");
-        token = new TokenResponse("user-test", "", LocalDateTime.now(), LocalDateTime.now());
+        token = new TokenResponse("user-test", "", "",LocalDateTime.now(), LocalDateTime.now());
     }
 
     @Test

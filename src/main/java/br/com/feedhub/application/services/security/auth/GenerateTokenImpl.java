@@ -44,7 +44,14 @@ public class GenerateTokenImpl implements GenerateToken {
                 .withSubject(username)
                 .sign(algorithm)
                 .strip();
-        return new TokenResponse(username, token, NOW, EXPIRES_AT);
+        String refreshToken = JWT.create()
+                .withClaim("roles", roles)
+                .withIssuedAt(Date.from(NOW.atZone(ZONE_ID).toInstant()))
+                .withExpiresAt(Date.from(EXPIRES_AT.atZone(ZONE_ID).toInstant()))
+                .withSubject(username)
+                .sign(algorithm)
+                .strip();
+        return new TokenResponse(username, token, refreshToken, NOW, EXPIRES_AT);
     }
 
 }
