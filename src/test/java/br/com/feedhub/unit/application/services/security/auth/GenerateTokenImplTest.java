@@ -42,9 +42,6 @@ class GenerateTokenImplTest {
         //When
         TokenResponse tokenResponse = jwtToken.execute("user-test", roles) ;
 
-        System.out.println(tokenResponse.token());
-        System.out.println(tokenResponse.refreshToken());
-
         //Then
         assertNotNull(tokenResponse);
         assertFalse(tokenResponse.token().isEmpty());
