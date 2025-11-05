@@ -26,7 +26,7 @@ services:
       DATASOURCE_USERNAME: postgres
       DATASOURCE_PASSWORD: postgres
       DATASOURCE_DBCREATE: update
-      SECRET_KEY: '4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P'
+      SECRET_KEY: Zp8L0y4vR9nK2sTqB1wXe9MjD3GhH7Fr
       ISSUER: feedhub
       VALIDITY: 3600000
     ports:
