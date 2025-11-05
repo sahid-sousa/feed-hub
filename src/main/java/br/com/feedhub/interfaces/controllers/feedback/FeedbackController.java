@@ -8,7 +8,6 @@ import br.com.feedhub.interfaces.dto.request.feedback.FeedbackCreateRequest;
 import br.com.feedhub.interfaces.dto.request.feedback.FeedbackUpdateRequest;
 import br.com.feedhub.interfaces.dto.response.FeedbackResponse;
 import br.com.feedhub.interfaces.dto.response.PageListResponse;
-import br.com.feedhub.interfaces.dto.response.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
