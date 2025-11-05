@@ -5,6 +5,7 @@ import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.feedback.FeedbackCategory;
 import br.com.feedhub.domain.feedback.FeedbackStatus;
 import br.com.feedhub.domain.security.User;
+import br.com.feedhub.infrastructure.repository.feedback.FeedbackMonthCount;
 import br.com.feedhub.infrastructure.repository.feedback.FeedbackRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +17,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,6 +37,10 @@ class FeedbackGatewayImplTest {
     private User user;
     private Feedback feedback;
     private Pageable pageable;
+
+
+    @Mock
+    private FeedbackMonthCount feedbackMonthCount;
 
     @BeforeEach
     public void setup() {
@@ -113,5 +120,20 @@ class FeedbackGatewayImplTest {
         feedbacksPage.forEach(Assertions::assertNotNull);
     }
 
+    @Test
+    @DisplayName("Test Given User and group month findAllByUserAndGroupMonth then Return FeedbackMonthCount")
+    void testGivenUserAndGroupMonth_findAllByUserAndGroupMonth_thenReturnFeedbackMonthCount() {
+        //When
+        given(feedbackMonthCount.getCount()).willReturn(Long.valueOf(1));
+        given(feedbackMonthCount.getMonth()).willReturn(10);
+        given(feedbackRepository.findAllByUserAndGroupMonth(any(), anyInt(), anyInt())).willReturn(List.of(feedbackMonthCount));
+        List<FeedbackMonthCount> feedbackMonthCounts = feedbackRepository.findAllByUserAndGroupMonth(user, 10, 10);
+
+
+        //Then
+        assertFalse(feedbackMonthCounts.isEmpty());
+        assertTrue(feedbackMonthCounts.getFirst().getCount() > 0);
+        assertEquals(feedbackMonthCounts.getFirst().getMonth(), 10);
+    }
 
 }

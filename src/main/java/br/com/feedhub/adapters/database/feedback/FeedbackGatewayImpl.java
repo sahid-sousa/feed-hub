@@ -2,6 +2,7 @@ package br.com.feedhub.adapters.database.feedback;
 
 import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.security.User;
+import br.com.feedhub.infrastructure.repository.feedback.FeedbackMonthCount;
 import br.com.feedhub.infrastructure.repository.feedback.FeedbackRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,16 @@ public class FeedbackGatewayImpl implements FeedbackGateway {
     @Override
     public Optional<List<Feedback>> findAllByAuthor(User author, Pageable pageable) {
         return feedbackRepository.findAllByAuthor(author, pageable);
+    }
+
+    @Override
+    public Integer countByAuthor(User author) {
+        return this.feedbackRepository.countByAuthor(author);
+    }
+
+    @Override
+    public List<FeedbackMonthCount> findAllByUserAndGroupMonth(User author, Integer startMonth, Integer endMonth) {
+        return feedbackRepository.findAllByUserAndGroupMonth(author, startMonth, endMonth);
     }
 
     @Override

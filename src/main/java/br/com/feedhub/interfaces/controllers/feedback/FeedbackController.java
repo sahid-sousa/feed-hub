@@ -1,12 +1,14 @@
 package br.com.feedhub.interfaces.controllers.feedback;
 
 import br.com.feedhub.application.usecases.feedback.CreateFeedback;
+import br.com.feedhub.application.usecases.feedback.FindFeedback;
 import br.com.feedhub.application.usecases.feedback.ListUserFeedback;
 import br.com.feedhub.application.usecases.feedback.UpdateFeedback;
 import br.com.feedhub.interfaces.dto.request.feedback.FeedbackCreateRequest;
 import br.com.feedhub.interfaces.dto.request.feedback.FeedbackUpdateRequest;
 import br.com.feedhub.interfaces.dto.response.FeedbackResponse;
 import br.com.feedhub.interfaces.dto.response.PageListResponse;
+import br.com.feedhub.interfaces.dto.response.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,11 +27,13 @@ public class FeedbackController {
     private final CreateFeedback createFeedback;
     private final ListUserFeedback listUserFeedback;
     private final UpdateFeedback updateFeedback;
+    private final FindFeedback findFeedback;
 
-    public FeedbackController(CreateFeedback createFeedback, ListUserFeedback listUserFeedback, UpdateFeedback updateFeedback) {
+    public FeedbackController(CreateFeedback createFeedback, ListUserFeedback listUserFeedback, UpdateFeedback updateFeedback, FindFeedback findFeedback) {
         this.createFeedback = createFeedback;
         this.listUserFeedback = listUserFeedback;
         this.updateFeedback = updateFeedback;
+        this.findFeedback = findFeedback;
     }
 
     @Operation(
@@ -72,6 +76,31 @@ public class FeedbackController {
     public ResponseEntity<?> update(@RequestBody FeedbackUpdateRequest feedback, HttpServletRequest request) {
         FeedbackResponse feedbackResponse = updateFeedback.execute(feedback, request);
         return ResponseEntity.ok().body(feedbackResponse);
+    }
+
+    @Operation(
+            summary = "Finds a Feedback",
+            description = "Finds a Feedback by passing id",
+            security = { @SecurityRequirement(name = "bearerAuth") },
+            responses = {
+                    @ApiResponse(
+                            description = "Success", responseCode = "200",
+                            content = @Content(schema = @Schema(
+                                    implementation = FeedbackResponse.class
+                            ))
+                    ),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+            }
+    )
+
+    //TODO checar se e preciso mover os metodos de find, list para um controller admin
+    @GetMapping(value = "/find/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id, HttpServletRequest request) {
+        var foundFeedback = findFeedback.execute(id, request);
+        return ResponseEntity.ok().body(foundFeedback);
     }
 
     @Operation(

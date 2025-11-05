@@ -3,6 +3,7 @@ package br.com.feedhub.adapters.database.comment;
 import br.com.feedhub.domain.comment.Comment;
 import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.security.User;
+import br.com.feedhub.infrastructure.repository.comment.CommentMonthCount;
 import br.com.feedhub.infrastructure.repository.comment.CommentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,16 @@ public class CommentGatewayImpl implements CommentGateway {
     @Override
     public Optional<List<Comment>> findAllByAuthor(User author, Pageable pageable) {
         return commentRepository.findAllByAuthor(author, pageable);
+    }
+
+    @Override
+    public Integer countByAuthor(User author) {
+        return commentRepository.countByAuthor(author);
+    }
+
+    @Override
+    public List<CommentMonthCount> findAllByUserAndGroupMonth(User author, Integer startMonth, Integer endMonth) {
+        return commentRepository.findAllByUserAndGroupMonth(author, startMonth, endMonth);
     }
 
     @Override

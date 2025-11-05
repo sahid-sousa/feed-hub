@@ -4,6 +4,7 @@ import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.feedback.FeedbackCategory;
 import br.com.feedhub.domain.feedback.FeedbackStatus;
 import br.com.feedhub.domain.security.User;
+import br.com.feedhub.infrastructure.repository.feedback.FeedbackMonthCount;
 import br.com.feedhub.infrastructure.repository.feedback.FeedbackRepository;
 import br.com.feedhub.infrastructure.repository.security.UserRepository;
 import br.com.feedhub.integration.config.AbstractIntegrationTest;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +53,7 @@ class FeedbackRepositoryTest extends AbstractIntegrationTest {
         feedback.setAuthor(user);
         feedback.setTitle("Title");
         feedback.setDescription("Description");
+        feedback.setMonth(LocalDateTime.now().getMonthValue());
         feedback.setCategory(FeedbackCategory.QUESTION);
         feedback.setStatus(FeedbackStatus.NEW);
 
@@ -61,7 +64,7 @@ class FeedbackRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     @DisplayName("Test Given Feedback Object when Save Feedback then Return Saved Feedback")
-    void testGivenFeedbackObject_whenSaveFeedback_theReturnSavedFeedback() {
+    void testGivenFeedbackObject_whenSaveFeedback_thenReturnSavedFeedback() {
         //When
         userRepository.save(user);
         Feedback savedFeedback = feedbackRepository.save(feedback);
@@ -78,7 +81,7 @@ class FeedbackRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     @DisplayName("Test Given ListFeedback Object when findAllByUserAuthor then Return Saved Feedback")
-    void testGivenListFeedbackObject_whenfindAllByUserAuthor_theReturnListFeedback() {
+    void testGivenListFeedbackObject_whenfindAllByUserAuthor_thenReturnListFeedback() {
         //When
         userRepository.save(user);
         feedbackRepository.save(feedback);
@@ -96,7 +99,7 @@ class FeedbackRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     @DisplayName("Test Given ListFeedback Object when findAllByFilters then Return Saved Feedback")
-    void testGivenListFeedbackObject_whenfindAllByFilters_theReturnListFeedback() {
+    void testGivenListFeedbackObject_whenfindAllByFilters_thenReturnListFeedback() {
         //When
         userRepository.save(user);
         feedbackRepository.save(feedback);
@@ -108,6 +111,23 @@ class FeedbackRepositoryTest extends AbstractIntegrationTest {
         assertTrue(feedbacksPage.getTotalElements() > 0);
         assertTrue(feedbacksPage.getNumberOfElements() > 0);
         feedbacksPage.forEach(Assertions::assertNotNull);
+    }
+
+    @Test
+    @DisplayName("Test Given User and group month findAllByUserAndGroupMonth then Return FeedbackMonthCount")
+    void testGivenUserAndGroupMonth_findAllByUserAndGroupMonth_thenReturnFeedbackMonthCount() {
+        //When
+        userRepository.save(user);
+        feedbackRepository.save(feedback);
+        Integer month = LocalDateTime.now().getMonthValue();
+
+        List<FeedbackMonthCount> feedbackMonthCounts = feedbackRepository.findAllByUserAndGroupMonth(user, month, month);
+
+
+        //Then
+        assertFalse(feedbackMonthCounts.isEmpty());
+        assertTrue(feedbackMonthCounts.getFirst().getCount() > 0);
+        assertEquals(feedbackMonthCounts.getFirst().getMonth(), LocalDateTime.now().getMonthValue());
     }
 
 

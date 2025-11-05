@@ -5,6 +5,7 @@ import br.com.feedhub.domain.feedback.Feedback;
 import br.com.feedhub.domain.feedback.FeedbackCategory;
 import br.com.feedhub.domain.feedback.FeedbackStatus;
 import br.com.feedhub.domain.security.User;
+import br.com.feedhub.infrastructure.repository.comment.CommentMonthCount;
 import br.com.feedhub.infrastructure.repository.comment.CommentRepository;
 import br.com.feedhub.infrastructure.repository.feedback.FeedbackRepository;
 import br.com.feedhub.infrastructure.repository.security.UserRepository;
@@ -61,6 +62,7 @@ class CommentRepositoryTest extends AbstractIntegrationTest {
         comment.setAuthor(author);
         comment.setFeedback(feedback);
         comment.setContent("content-comment");
+        comment.setMonth(LocalDateTime.now().getMonthValue());
         comment.setDateCreated(LocalDateTime.now());
         comment.setLastUpdated(LocalDateTime.now());
     }
@@ -191,6 +193,24 @@ class CommentRepositoryTest extends AbstractIntegrationTest {
         assertTrue(commentsPage.getTotalElements() > 0);
         assertTrue(commentsPage.getTotalPages() > 0);
         commentsPage.forEach(Assertions::assertNotNull);
+    }
+
+
+    @Test
+    @DisplayName("Test Given User and group month findAllByUserAndGroupMonth then Return CommentMonthCount")
+    void testGivenUserAndGroupMonth_findAllByUserAndGroupMonth_thenReturnCommentMonthCount() {
+        //When
+        userRepository.save(author);
+        feedbackRepository.save(feedback);
+        commentRepository.save(comment);
+        Integer month = LocalDateTime.now().getMonthValue();
+        List<CommentMonthCount> commentMonthCounts = commentRepository.findAllByUserAndGroupMonth(author, month, month);
+
+
+        //Then
+        assertFalse(commentMonthCounts.isEmpty());
+        assertTrue(commentMonthCounts.getFirst().getCount() > 0);
+        assertEquals(commentMonthCounts.getFirst().getMonth(), LocalDateTime.now().getMonthValue());
     }
 
 }

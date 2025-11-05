@@ -15,6 +15,7 @@ import br.com.feedhub.utils.GenericBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -51,9 +52,15 @@ public class CreateFeedbackImpl implements CreateFeedback {
     }
 
     public Feedback createFeedback(User author, FeedbackCreateRequest feedbackCreateRequest) {
+        LocalDateTime now = LocalDateTime.now();
         Feedback feedback = GenericBuilder.of(Feedback::new)
                 .with(Feedback::setTitle, feedbackCreateRequest.getTitle())
                 .with(Feedback::setAuthor, author)
+                .with(Feedback::setDateCreated, now)
+                .with(Feedback::setLastUpdated, now)
+                .with(Feedback::setDay, now.getDayOfMonth())
+                .with(Feedback::setMonth, now.getMonthValue())
+                .with(Feedback::setYear, now.getYear())
                 .with(Feedback::setDescription, feedbackCreateRequest.getDescription())
                 .with(Feedback::setCategory, FeedbackCategory.valueOf(feedbackCreateRequest.getCategory()))
                 .with(Feedback::setStatus, FeedbackStatus.NEW)

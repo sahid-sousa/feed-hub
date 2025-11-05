@@ -56,12 +56,16 @@ public class CreateCommentImpl implements CreateComment {
         if (feedback.isEmpty()) {
             throw new RequiredObjectIsNullException("Feedback not found with id " + commentCreateRequest.getFeedbackId());
         }
+        LocalDateTime now = LocalDateTime.now();
         Comment comment = GenericBuilder.of(Comment::new)
                 .with(Comment::setAuthor, author)
                 .with(Comment::setContent, commentCreateRequest.getContent())
                 .with(Comment::setFeedback, feedback.get())
-                .with(Comment::setDateCreated, LocalDateTime.now())
-                .with(Comment::setLastUpdated, LocalDateTime.now())
+                .with(Comment::setDateCreated, now)
+                .with(Comment::setLastUpdated, now)
+                .with(Comment::setDay, now.getDayOfMonth())
+                .with(Comment::setMonth, now.getMonthValue())
+                .with(Comment::setYear, now.getYear())
                 .build();
         return commentGateway.save(comment);
     }
