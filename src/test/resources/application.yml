@@ -13,6 +13,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 jwt:
   secret:
-    key: ${SECRET_KEY:4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P}
+    key: ${SECRET_KEY:Zp6L0y5vR10nK3sUqB2wXe9MjD3GhH8Fr}
     issuer: ${ISSUER:feedhub}
     validity: ${VALIDITY:3600000}
